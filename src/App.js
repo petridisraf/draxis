@@ -50,10 +50,20 @@ const App = () =>{
     }
   };
 
-  // Filter menu items based on selected filters
-  const filteredMenuItems = items.dishes.filter((item) => {
+ // Filter menu items based on selected filters and price range
+ const filteredMenuItems = items.dishes.filter((item) => {
     const itemPrice = item.price;
-    return itemPrice >= minPrice && itemPrice <= maxPrice;
+    const meetsPriceCriteria = itemPrice >= minPrice && itemPrice <= maxPrice;
+
+    // Check if the item has tags and meets all selected filters
+    const meetsFilterCriteria = selectedFilters.every((filter) => {
+      const dietaryPreferences = item.tags.dietaryPreferences || [];
+      const allergens = item.tags.allergens || [];
+      return dietaryPreferences.includes(filter) || allergens.includes(filter);
+    });
+
+    // Return true if the item meets both price and filter criteria
+    return meetsPriceCriteria && meetsFilterCriteria;
   });
 
   const handleFilterButtonClick = (filter) => {
@@ -65,9 +75,23 @@ const App = () =>{
       // Add the filter if it's not selected
       setSelectedFilters([...selectedFilters, filter]);
     }
+    
   };
 
-  
+  {/* test code*/}
+  const extractTagsFromDish = (dish) => {
+  const allTags = new Set();
+  const { dietaryPreferences, allergens } = dish.tags;
+
+  if (dietaryPreferences) {
+    dietaryPreferences.forEach((tag) => allTags.add(tag));
+  }
+  if (allergens) {
+    allergens.forEach((tag) => allTags.add(tag));
+  }
+
+  return Array.from(allTags);
+};
   
   
  
@@ -103,8 +127,14 @@ const App = () =>{
         <div className="filter-buttons">
           <button onClick={() => handleFilterButtonClick("vegetarian")}>Vegetarian</button>
           <button onClick={() => handleFilterButtonClick("vegan")}>Vegan</button>
-          <button onClick={() => handleFilterButtonClick("lactose-free")}>Lactose-Free</button>
-          {/* Add more filter buttons for other criteria */}
+          <button onClick={() => handleFilterButtonClick("lactose-free")}>Lactose Free</button>
+          <button onClick={() => handleFilterButtonClick("nut-Free")}>Nut Free</button>
+          <button onClick={() => handleFilterButtonClick("contains-nuts")}>Contains Nuts</button>
+          <button onClick={() => handleFilterButtonClick("contains-gluten")}>Contains Gluten</button>
+          <button onClick={() => handleFilterButtonClick("contains-lactose")}>Contains Lactose</button>
+          <button onClick={() => handleFilterButtonClick("contains-lactose")}>Contains Lactose</button>
+          <button onClick={() => handleFilterButtonClick("other-allergens")}>Other Allergens</button>
+          <button onClick={() => handleFilterButtonClick("allergen-free")}>Allergen Free</button>
         </div>
 
         <div className="price-filter">
