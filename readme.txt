@@ -15,9 +15,9 @@ Getting Started
         Node.js and npm (Node Package Manager) should be installed on your system. You can download and install them from here.
     Installation
         Clone the repository to your local machine:
-            git clone https://github.com/your-username/restaurant-menu-app.git
+            git clone https://github.com/your-username/draxis-app.git
         Change into the project directory:
-            cd restaurant-menu-app
+            cd draxis-app
         Install the required dependencies by running:
             npm install
         Start the development server:
